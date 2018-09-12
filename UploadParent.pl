@@ -46,6 +46,12 @@ sub Main {
 
     $upload->DBConnect();
     
+    if(ConstData::EXE_DATA){
+        if(ConstData::EXE_DATA_PROPER_NAME){
+            $upload->DeleteAll('proper_names');
+            $upload->Upload("./output/data/proper_name.csv", 'proper_names');
+        }
+    }
     if(ConstData::EXE_CHARA){
         if(ConstData::EXE_CHARA_NAME)    {
             $upload->DeleteSameResult('names', $result_no, $generate_no);
