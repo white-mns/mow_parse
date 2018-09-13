@@ -134,13 +134,13 @@ sub ParsePage{
     my $tree = HTML::TreeBuilder->new;
     $tree->parse($content);
 
-    my $player_nodes     = &GetNode::GetNode_Tag_Id("h2","player", \$tree);
+    my $player_nodes     = &GetNode::GetNode_Tag_Attr("h2", "id","player", \$tree);
     my $charadata_node   = $$player_nodes[0]->right;
-    my $minieffect_nodes = &GetNode::GetNode_Tag_Class("div","minieffect", \$charadata_node);
-    my $status_nodes     = &GetNode::GetNode_Tag_Class("table","charadata", \$tree);
-    $status_nodes = scalar(@$status_nodes) ? $status_nodes : &GetNode::GetNode_Tag_Class("table","charadata2", \$tree); #機体プロフ絵ありのレイアウト対応
-    my $spec_data_nodes  = &GetNode::GetNode_Tag_Class("table","specdata", \$tree);
-    my $nextday_h2_nodes = &GetNode::GetNode_Tag_Id("h2","nextday", \$tree);
+    my $minieffect_nodes = &GetNode::GetNode_Tag_Attr("div", "class", "minieffect", \$charadata_node);
+    my $status_nodes     = &GetNode::GetNode_Tag_Attr("table", "class", "charadata", \$tree);
+    $status_nodes = scalar(@$status_nodes) ? $status_nodes : &GetNode::GetNode_Tag_Attr("table", "class", "charadata2", \$tree); #機体プロフ絵ありのレイアウト対応
+    my $spec_data_nodes  = &GetNode::GetNode_Tag_Attr("table", "class", "specdata", \$tree);
+    my $nextday_h2_nodes = &GetNode::GetNode_Tag_Attr("h2", "id", "nextday", \$tree);
 
     # データリスト取得
     if (exists($self->{DataHandlers}{Name}))   {$self->{DataHandlers}{Name}->GetData  ($e_no, $minieffect_nodes)};

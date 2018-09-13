@@ -128,7 +128,7 @@ sub ParsePage{
     my $tree = HTML::TreeBuilder->new;
     $tree->parse($content);
 
-    my $lifelist_table_nodes = &GetNode::GetNode_Tag_Class("table", "lifelist", \$tree);
+    my $lifelist_table_nodes = &GetNode::GetNode_Tag_Attr("table", "class", "lifelist", \$tree);
 
     # データリスト取得
     if (exists($self->{DataHandlers}{Block})) {$self->{DataHandlers}{Block}->GetData($battle_no, $$lifelist_table_nodes[0])};
