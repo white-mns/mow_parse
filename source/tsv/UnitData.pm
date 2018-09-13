@@ -98,7 +98,7 @@ sub GetData{
     my @file_data = split(/\n/, $content);
     shift(@file_data); # ヘッダ行削除
     
-    foreach my  $data_set(@file_data){
+    foreach my  $data_set(@file_data) {
         my $data = [];
         @$data   = split(ConstData::SPLIT, $data_set);
         
@@ -133,7 +133,7 @@ sub GetUnitData{
     my $turning_speed = $$data[10];
     
     my $guard_elemental = $$data[11];
-    if ($guard_elemental =~ /^[0-9]+$/){
+    if ($guard_elemental =~ /^[0-9]+$/) {
         # カタログデータと違って防御値が数字で入っているので、変換する
         $guard_elemental =~ s/1/物理/s; 
         $guard_elemental =~ s/2/粒子/s;

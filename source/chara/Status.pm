@@ -93,35 +93,35 @@ sub GetStatusData{
     my ($acc_reward, $rp, $gunshot, $struggle, $reaction, $control, $preparation, $fitly, $funds, $exp) = (0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
     my $th_nodes = &GetNode::GetNode_Tag("th", \$status_node);
 
-    foreach my $th_node (@$th_nodes){
-        if($th_node->as_text eq "累積報酬"){
+    foreach my $th_node (@$th_nodes) {
+        if ($th_node->as_text eq "累積報酬") {
             $acc_reward = $th_node->right->as_text;
 
-        }elsif($th_node->as_text eq "RP"){
+        } elsif ($th_node->as_text eq "RP") {
             $rp = $th_node->right->as_text;
 
-        }elsif($th_node->as_text eq "射撃"){
+        } elsif ($th_node->as_text eq "射撃") {
             $gunshot = $th_node->right->as_text;
 
-        }elsif($th_node->as_text eq "格闘"){
+        } elsif ($th_node->as_text eq "格闘") {
             $struggle = $th_node->right->as_text;
 
-        }elsif($th_node->as_text eq "反応"){
+        } elsif ($th_node->as_text eq "反応") {
             $reaction = $th_node->right->as_text;
 
-        }elsif($th_node->as_text eq "制御"){
+        } elsif ($th_node->as_text eq "制御") {
             $control = $th_node->right->as_text;
 
-        }elsif($th_node->as_text eq "整備"){
+        } elsif ($th_node->as_text eq "整備") {
             $preparation = $th_node->right->as_text;
 
-        }elsif($th_node->as_text eq "適性"){
+        } elsif ($th_node->as_text eq "適性") {
             $fitly = $th_node->right->as_text;
 
-        }elsif($th_node->as_text eq "所持資金"){
+        } elsif ($th_node->as_text eq "所持資金") {
             $funds = $th_node->right->as_text;
 
-        }elsif($th_node->as_text eq "経験値"){
+        } elsif ($th_node->as_text eq "経験値") {
             $exp = $th_node->right->as_text;
 
         }
