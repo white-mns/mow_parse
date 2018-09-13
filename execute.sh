@@ -3,6 +3,10 @@
 CURENT=`pwd`	#実行ディレクトリの保存
 cd `dirname $0`	#解析コードのあるディレクトリで作業をする
 
+if [ -z "$1" ]; then
+    exit
+fi
+
 RESULT_NO=`printf "%03d" $1`
 GENERATE_NO=$2
 
