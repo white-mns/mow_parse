@@ -131,7 +131,18 @@ sub GetUnitData{
     my $ammunition_cost = $$data[8];
     my $weight = $$data[9];
     my $turning_speed = $$data[10];
+    
     my $guard_elemental = $$data[11];
+    if ($guard_elemental =~ /^[0-9]+$/){
+        # カタログデータと違って防御値が数字で入っているので、変換する
+        $guard_elemental =~ s/1/物理/s; 
+        $guard_elemental =~ s/2/粒子/s;
+        $guard_elemental =~ s/3/霊障/s;
+        $guard_elemental =~ s/4/電子/s;
+        $guard_elemental =~ s/5/火炎/s;
+    }
+    $guard_elemental = $self->{CommonDatas}{ProperName}->GetOrAddId($guard_elemental);
+
     my $guard_value = $$data[12];
     my $precision = $$data[13];
     my $punding = $$data[14];
