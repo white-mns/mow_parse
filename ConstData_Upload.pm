@@ -28,6 +28,8 @@ use warnings;
         use constant EXE_CHARA_REWARD             => 1;
     use constant EXE_CHARALIST    => 1;
         use constant EXE_CHARALIST_NEXT_BATTLE  => 1;
+    use constant EXE_BATTLE  => 1;
+        use constant EXE_BATTLE_BLOCK => 1;
     use constant EXE_MARKET     => 1;
 
 1;

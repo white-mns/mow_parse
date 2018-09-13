@@ -89,6 +89,12 @@ sub Main {
             $upload->Upload("./output/charalist/next_battle_" . $result_no . "_" . $generate_no . ".csv", 'next_battles');
         }
     }
+    if (ConstData::EXE_BATTLE) {
+        if(ConstData::EXE_BATTLE_BLOCK) {
+            $upload->DeleteSameResult('blocks', $result_no, $generate_no);
+            $upload->Upload("./output/battle/block_" . $result_no . "_" . $generate_no . ".csv", 'blocks');
+        }
+    }
     print "result_no:$result_no,generate_no:$generate_no\n";
     return;
 }
