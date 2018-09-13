@@ -39,35 +39,43 @@ sub Main {
     my $generate_no = $ARGV[1];
     my $upload = Upload->new();
 
-    if(!defined($result_no) || !defined($generate_no)){
+    if (!defined($result_no) || !defined($generate_no)) {
         print "error:empty result_no or generate_no";
         return;
     }
 
     $upload->DBConnect();
     
-    if(ConstData::EXE_DATA){
-        if(ConstData::EXE_DATA_PROPER_NAME){
+    if (ConstData::EXE_DATA) {
+        if (ConstData::EXE_DATA_PROPER_NAME) {
             $upload->DeleteAll('proper_names');
             $upload->Upload("./output/data/proper_name.csv", 'proper_names');
         }
     }
-    if(ConstData::EXE_MARKET)    {
+    if (ConstData::EXE_MARKET) {
         $upload->DeleteSameResult('markets', $result_no, $generate_no);
         $upload->Upload("./output/market/catalog_" . $result_no . "_" . $generate_no . ".csv", 'markets');
     }
-    if(ConstData::EXE_CHARA){
-        if(ConstData::EXE_CHARA_NAME)    {
+    if (ConstData::EXE_CHARA) {
+        if (ConstData::EXE_CHARA_NAME) {
             $upload->DeleteSameResult('names', $result_no, $generate_no);
             $upload->Upload("./output/chara/name_" . $result_no . "_" . $generate_no . ".csv", 'names');
         }
-        if(ConstData::EXE_CHARA_ITEM)    {
+        if (ConstData::EXE_CHARA_ITEM) {
             $upload->DeleteSameResult('items', $result_no, $generate_no);
             $upload->Upload("./output/chara/item_" . $result_no . "_" . $generate_no . ".csv", 'items');
         }
-        if(ConstData::EXE_CHARA_STATUS)    {
+        if (ConstData::EXE_CHARA_STATUS) {
             $upload->DeleteSameResult('statuses', $result_no, $generate_no);
             $upload->Upload("./output/chara/status_" . $result_no . "_" . $generate_no . ".csv", 'statuses');
+        }
+        if (ConstData::EXE_CHARA_SPEC) {
+            $upload->DeleteSameResult('specs', $result_no, $generate_no);
+            $upload->Upload("./output/chara/spec_" . $result_no . "_" . $generate_no . ".csv", 'specs');
+        }
+        if (ConstData::EXE_CHARA_CONDITION_ALL_TEXT)    {
+            $upload->DeleteSameResult('condition_all_texts', $result_no, $generate_no);
+            $upload->Upload("./output/chara/condition_all_text_" . $result_no . "_" . $generate_no . ".csv", 'condition_all_texts');
         }
         
     }

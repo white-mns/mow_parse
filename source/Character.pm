@@ -20,6 +20,7 @@ require "./source/lib/NumCode.pm";
 
 require "./source/chara/Name.pm";
 require "./source/chara/Status.pm";
+require "./source/chara/Spec.pm";
 
 use ConstData;        #定数呼び出し
 
@@ -44,14 +45,15 @@ sub new {
 #-----------------------------------#
 #    初期化
 #-----------------------------------#
-sub Init(){
+sub Init() {
     my $self = shift;
     ($self->{ResultNo}, $self->{GenerateNo}, $self->{CommonDatas}) = @_;
-    $self->{ResultNo0} = sprintf("%03d", $self->{ResultNo});
+    $self->{ResultNo0} = sprintf ("%03d", $self->{ResultNo});
 
     #インスタンス作成
-    if(ConstData::EXE_CHARA_NAME)             { $self->{DataHandlers}{Name}            = Name->new();}
-    if(ConstData::EXE_CHARA_STATUS)           { $self->{DataHandlers}{Status}          = Status->new();}
+    if (ConstData::EXE_CHARA_NAME)   { $self->{DataHandlers}{Name}   = Name->new();}
+    if (ConstData::EXE_CHARA_STATUS) { $self->{DataHandlers}{Status} = Status->new();}
+    if (ConstData::EXE_CHARA_SPEC)   { $self->{DataHandlers}{Spec}   = Spec->new();}
 
     #初期化処理
     foreach my $object( values %{ $self->{DataHandlers} } ) {
@@ -76,14 +78,14 @@ sub Execute{
     my $directory = './data/utf/' . $self->{ResultNo0};
     $directory .= ($self->{GenerateNo} == 0) ? '' :  '_' . $self->{GenerateNo};
     $directory .= '/RESULT';
-    if(ConstData::EXE_ALLRESULT){
+    if (ConstData::EXE_ALLRESULT) {
         #結果全解析
         my @file_list = grep { -f } glob("$directory/c*.html");
         my $i = 0;
-        foreach my $file_adr (@file_list){
-            if($file_adr =~ /catalog/) {next};
+        foreach my $file_adr (@file_list) {
+            if ($file_adr =~ /catalog/) {next};
             $i++;
-            if($i % 10 == 0){print $i . "\n"};
+            if ($i % 10 == 0) {print $i . "\n"};
 
             $file_adr =~ /c(.*?)\.html/;
             my $file_name = $1;
@@ -97,9 +99,9 @@ sub Execute{
         $end   = ConstData::FLAGMENT_END;
         print "$start to $end\n";
 
-        for(my $i=$start; $i<=$end; $i++){
-            if($i % 10 == 0){print $i . "\n"};
-            my $i0 = sprintf("%04d", $i);
+        for(my $i=$start; $i<=$end; $i++) {
+            if ($i % 10 == 0) {print $i . "\n"};
+            my $i0 = sprintf ("%04d", $i);
             $self->ParsePage($directory  . "/c" . $i0 . ".html",$i);
         }
     }
@@ -122,7 +124,7 @@ sub ParsePage{
     my $content = "";
     $content = &IO::FileRead($file_name);
 
-    if(!$content){ return;}
+    if (!$content) { return;}
 
     $content = &NumCode::EncodeEscape($content);
         
@@ -135,10 +137,12 @@ sub ParsePage{
     my $minieffect_nodes = &GetNode::GetNode_Tag_Class("div","minieffect", \$charadata_node);
     my $status_nodes     = &GetNode::GetNode_Tag_Class("table","charadata", \$tree);
     $status_nodes = scalar(@$status_nodes) ? $status_nodes : &GetNode::GetNode_Tag_Class("table","charadata2", \$tree); #機体プロフ絵ありのレイアウト対応
+    my $spec_data_nodes  = &GetNode::GetNode_Tag_Class("table","specdata", \$tree);
 
     # データリスト取得
-    if(exists($self->{DataHandlers}{Name}))            {$self->{DataHandlers}{Name}->GetData  ($e_no, $minieffect_nodes)};
-    if(exists($self->{DataHandlers}{Status}))          {$self->{DataHandlers}{Status}->GetData($e_no, $$status_nodes[0])};
+    if (exists($self->{DataHandlers}{Name}))   {$self->{DataHandlers}{Name}->GetData  ($e_no, $minieffect_nodes)};
+    if (exists($self->{DataHandlers}{Status})) {$self->{DataHandlers}{Status}->GetData($e_no, $$status_nodes[0])};
+    if (exists($self->{DataHandlers}{Spec}))   {$self->{DataHandlers}{Spec}->GetData  ($e_no, $$spec_data_nodes[0])};
 
     $tree = $tree->delete;
 }
@@ -157,9 +161,9 @@ sub GetFileNo{
     my @fileList = grep { -f } glob("$directory/$prefix*.html");
 
     my $max= 0;
-    foreach(@fileList){
+    foreach (@fileList) {
         $_ =~ /$prefix(\d+).html/;
-        if($max < $1) {$max = $1;}
+        if ($max < $1) {$max = $1;}
     }
     return $max
 }
