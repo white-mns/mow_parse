@@ -65,6 +65,10 @@ sub Main {
             $upload->DeleteSameResult('items', $result_no, $generate_no);
             $upload->Upload("./output/chara/item_" . $result_no . "_" . $generate_no . ".csv", 'items');
         }
+        if(ConstData::EXE_CHARA_STATUS)    {
+            $upload->DeleteSameResult('statuses', $result_no, $generate_no);
+            $upload->Upload("./output/chara/status_" . $result_no . "_" . $generate_no . ".csv", 'statuses');
+        }
         
     }
     print "result_no:$result_no,generate_no:$generate_no\n";

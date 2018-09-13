@@ -21,8 +21,9 @@ use warnings;
         use constant FLAGMENT_START    => 1;    #部分探索開始
         use constant FLAGMENT_END      => 1;    #部分探索終了
     
-    use constant EXE_CHARA      => 0;
+    use constant EXE_CHARA      => 1;
         use constant EXE_CHARA_NAME             => 1;
+        use constant EXE_CHARA_STATUS           => 1;
     use constant EXE_TSV        => 1;
         use constant EXE_TSV_UNITDATA     => 1;
         use constant EXE_TSV_CATALOGDATA  => 1;

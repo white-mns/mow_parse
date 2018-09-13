@@ -19,6 +19,7 @@ require "./source/lib/time.pm";
 require "./source/lib/NumCode.pm";
 
 require "./source/chara/Name.pm";
+require "./source/chara/Status.pm";
 
 use ConstData;        #定数呼び出し
 
@@ -50,6 +51,7 @@ sub Init(){
 
     #インスタンス作成
     if(ConstData::EXE_CHARA_NAME)             { $self->{DataHandlers}{Name}            = Name->new();}
+    if(ConstData::EXE_CHARA_STATUS)           { $self->{DataHandlers}{Status}          = Status->new();}
 
     #初期化処理
     foreach my $object( values %{ $self->{DataHandlers} } ) {
@@ -131,9 +133,12 @@ sub ParsePage{
     my $player_nodes     = &GetNode::GetNode_Tag_Id("h2","player", \$tree);
     my $charadata_node   = $$player_nodes[0]->right;
     my $minieffect_nodes = &GetNode::GetNode_Tag_Class("div","minieffect", \$charadata_node);
+    my $status_nodes     = &GetNode::GetNode_Tag_Class("table","charadata", \$tree);
+    $status_nodes = scalar(@$status_nodes) ? $status_nodes : &GetNode::GetNode_Tag_Class("table","charadata2", \$tree); #機体プロフ絵ありのレイアウト対応
 
     # データリスト取得
-    if(exists($self->{DataHandlers}{Name}))            {$self->{DataHandlers}{Name}->GetData($e_no, $minieffect_nodes)};
+    if(exists($self->{DataHandlers}{Name}))            {$self->{DataHandlers}{Name}->GetData  ($e_no, $minieffect_nodes)};
+    if(exists($self->{DataHandlers}{Status}))          {$self->{DataHandlers}{Status}->GetData($e_no, $$status_nodes[0])};
 
     $tree = $tree->delete;
 }
