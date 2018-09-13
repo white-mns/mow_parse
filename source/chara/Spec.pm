@@ -202,7 +202,12 @@ sub GetConditionData{
         
         if (!($text && $text ne " ")) { next;}
         if ($text =~ /付加発動/)     { last;}
-        $condition = $self->{CommonDatas}{ProperName}->GetOrAddId($text);
+        if ($text =~ /(.+)…(.+)/) {
+            $condition = $self->{CommonDatas}{ProperName}->GetOrAddId($1);
+
+        } else {
+            $condition = $self->{CommonDatas}{ProperName}->GetOrAddId($text);
+        }
         $condition_text .= ($text && $text ne " ") ? "$text," : "";
     }
 
