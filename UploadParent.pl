@@ -73,15 +73,21 @@ sub Main {
             $upload->DeleteSameResult('specs', $result_no, $generate_no);
             $upload->Upload("./output/chara/spec_" . $result_no . "_" . $generate_no . ".csv", 'specs');
         }
-        if (ConstData::EXE_CHARA_CONDITION_ALL_TEXT)    {
+        if (ConstData::EXE_CHARA_CONDITION_ALL_TEXT) {
             $upload->DeleteSameResult('condition_all_texts', $result_no, $generate_no);
             $upload->Upload("./output/chara/condition_all_text_" . $result_no . "_" . $generate_no . ".csv", 'condition_all_texts');
         }
-        if(ConstData::EXE_CHARA_REWARD)    {
+        if(ConstData::EXE_CHARA_REWARD) {
             $upload->DeleteSameResult('rewards', $result_no, $generate_no);
             $upload->Upload("./output/chara/reward_" . $result_no . "_" . $generate_no . ".csv", 'rewards');
         }
         
+    }
+    if (ConstData::EXE_CHARALIST) {
+        if (ConstData::EXE_CHARALIST_NEXT_BATTLE) {
+            $upload->DeleteSameResult('next_battles', $result_no, $generate_no);
+            $upload->Upload("./output/charalist/next_battle_" . $result_no . "_" . $generate_no . ".csv", 'next_battles');
+        }
     }
     print "result_no:$result_no,generate_no:$generate_no\n";
     return;
