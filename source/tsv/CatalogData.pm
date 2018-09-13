@@ -1,5 +1,5 @@
 #===================================================================
-#        UnitData.tsv(アイテム情報)取得パッケージ
+#        CatalogData.tsv（マーケット情報）取得パッケージ
 #-------------------------------------------------------------------
 #            (C) 2018 @white_mns
 #===================================================================
@@ -16,7 +16,7 @@ use ConstData;        #定数呼び出し
 #------------------------------------------------------------------#
 #    パッケージの定義
 #------------------------------------------------------------------#     
-package UnitData;
+package CatalogData;
 
 #-----------------------------------#
 #    コンストラクタ
@@ -44,7 +44,7 @@ sub Init(){
                 "result_no",
                 "generate_no",
                 "e_no",
-                "i_no",
+                "market_no",
                 "name",
                 "kind",
                 "unique_1",
@@ -71,17 +71,18 @@ sub Init(){
                 "control",
                 "preparation",
                 "fitly",
+                "type_id",
                 "equip",
                 "fuka_1",
                 "fuka_2",
+                "charge",
                 "orig_name",
-                "drunkenness",
     ];
 
     $self->{Datas}{Item}->Init($header_list);
     
     #出力ファイル設定
-    $self->{Datas}{Item}->SetOutputName( "./output/chara/item_" . $self->{ResultNo} . "_" . $self->{GenerateNo} . ".csv" );
+    $self->{Datas}{Item}->SetOutputName( "./output/market/catalog_" . $self->{ResultNo} . "_" . $self->{GenerateNo} . ".csv" );
     return;
 }
 
@@ -96,14 +97,14 @@ sub GetData{
     
     my $content   = &IO::FileRead ( $file_name );
     my @file_data = split(/\n/, $content);
-    shift(@file_data); # ヘッダ行削除
+    pop(@file_data); # フッタ行削除
     
-    foreach my  $data_set(@file_data){
+    foreach my $data_set(@file_data) {
         my $data = [];
         @$data   = split(ConstData::SPLIT, $data_set);
         
         if (scalar(@$data) < 1 || !$$data[0] || !$$data[2]) {next;}
-        
+
         $self->GetUnitData($data);
     } 
     
@@ -111,16 +112,15 @@ sub GetData{
 }
 
 #-----------------------------------#
-#    アイテムデータ取得
+#    マーケットデータ取得
 #------------------------------------
 #    引数｜tsvデータ一行を分割した配列
 #-----------------------------------#
 sub GetUnitData{
     my $self         = shift;
     my $data         = shift;
-    my $e_no = int($$data[0] / 31);
-    my $i_no = $$data[0] % 31;
 
+    my $market_no = $$data[0];
     my $name = $$data[1];
     my $kind = $self->{CommonDatas}{ProperName}->GetOrAddId($$data[2]);
     my $unique_1 = $$data[3];
@@ -131,7 +131,7 @@ sub GetUnitData{
     my $ammunition_cost = $$data[8];
     my $weight = $$data[9];
     my $turning_speed = $$data[10];
-    my $guard_elemental = $$data[11];
+    my $guard_elemental = $self->{CommonDatas}{ProperName}->GetOrAddId($$data[11]);
     my $guard_value = $$data[12];
     my $precision = $$data[13];
     my $punding = $$data[14];
@@ -147,13 +147,15 @@ sub GetUnitData{
     my $control = $$data[25];
     my $preparation = $$data[26];
     my $fitly = $$data[27];
+    my $type = $$data[28];
     my $equip = $$data[29];
     my $fuka_1 = $self->{CommonDatas}{ProperName}->GetOrAddId($$data[30]);
     my $fuka_2 = $self->{CommonDatas}{ProperName}->GetOrAddId($$data[31]);
+    my $e_no = $$data[32];
+    my $charge = $$data[34];
     my $orig_name = $self->{CommonDatas}{ProperName}->GetOrAddId($$data[36]);
-    my $drunkenness = $$data[37] ? $$data[37] : 0;
-
-    my @datas=($self->{ResultNo}, $self->{GenerateNo}, $e_no, $i_no, $name, $kind, $unique_1, $unique_2, $ap, $spending_en, $value, $ammunition_cost, $weight, $turning_speed, $guard_elemental, $guard_value, $precision, $punding, $aerosol, $bullet, $loading, $weapon_element, $add_abnormity, $strength, $gunshot, $struggle, $reaction, $control, $preparation, $fitly, $equip, $fuka_1, $fuka_2, $orig_name, $drunkenness);
+    
+    my @datas=($self->{ResultNo}, $self->{GenerateNo}, $e_no, $market_no, $name, $kind, $unique_1, $unique_2, $ap, $spending_en, $value, $ammunition_cost, $weight, $turning_speed, $guard_elemental, $guard_value, $precision, $punding, $aerosol, $bullet, $loading, $weapon_element, $add_abnormity, $strength, $gunshot, $struggle, $reaction, $control, $preparation, $fitly, $type, $equip, $fuka_1, $fuka_2, $charge, $orig_name);
     $self->{Datas}{Item}->AddData(join(ConstData::SPLIT, @datas));
     
     return;

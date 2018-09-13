@@ -52,6 +52,10 @@ sub Main {
             $upload->Upload("./output/data/proper_name.csv", 'proper_names');
         }
     }
+    if(ConstData::EXE_MARKET)    {
+        $upload->DeleteSameResult('markets', $result_no, $generate_no);
+        $upload->Upload("./output/market/catalog_" . $result_no . "_" . $generate_no . ".csv", 'markets');
+    }
     if(ConstData::EXE_CHARA){
         if(ConstData::EXE_CHARA_NAME)    {
             $upload->DeleteSameResult('names', $result_no, $generate_no);

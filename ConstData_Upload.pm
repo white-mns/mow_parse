@@ -22,5 +22,6 @@ use warnings;
     use constant EXE_CHARA      => 1;
         use constant EXE_CHARA_NAME => 1;
         use constant EXE_CHARA_ITEM  => 1;
+    use constant EXE_MARKET       => 1;
 
 1;
