@@ -161,7 +161,11 @@ sub GetUnitData{
     my $equip = $$data[29];
     my $fuka_1 = $self->{CommonDatas}{ProperName}->GetOrAddId($$data[30]);
     my $fuka_2 = $self->{CommonDatas}{ProperName}->GetOrAddId($$data[31]);
-    my $orig_name = $self->{CommonDatas}{ProperName}->GetOrAddId($$data[36]);
+
+    my $orig_name = $$data[36];
+    $orig_name =~ s/\s//g;
+    $orig_name = $self->{CommonDatas}{ProperName}->GetOrAddId($orig_name);
+
     my $drunkenness = $$data[37] ? $$data[37] : 0;
 
     my @datas=($self->{ResultNo}, $self->{GenerateNo}, $e_no, $i_no, $name, $kind, $unique_1, $unique_2, $ap, $spending_en, $value, $ammunition_cost, $weight, $turning_speed, $guard_elemental, $guard_value, $precision, $punding, $aerosol, $bullet, $loading, $weapon_element, $add_abnormity, $strength, $gunshot, $struggle, $reaction, $control, $preparation, $fitly, $equip, $fuka_1, $fuka_2, $orig_name, $drunkenness);
