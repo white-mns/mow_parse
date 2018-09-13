@@ -120,7 +120,7 @@ sub GetRewardData{
         } elsif ($reward_child =~ /防衛戦果補正/) {
             $defense = $self->ExtractCompensationValue($reward_children[$i+1]->as_text);
 
-        } elsif ($reward_child =~ /撃破数補正/) {
+        } elsif ($reward_child =~ /撃墜数補正/) {
             $defeat = $self->ExtractCompensationValue($reward_children[$i+1]->as_text);
 
         } elsif ($reward_child =~ /販売数補正/) {
@@ -135,7 +135,7 @@ sub GetRewardData{
         } elsif ($reward_child =~ /ファイトマネー補正/) {
             $fight_money = $self->ExtractCompensationValue($reward_children[$i+1]->as_text);
 
-        } elsif ($reward_child =~ /敵警戒補正/) {
+        } elsif ($reward_child =~ /敵警戒値補正/) {
             $enemy_caution = $self->ExtractCompensationValue($reward_children[$i+1]->as_text);
 
         } elsif ($reward_child =~ /合計現金収入/) {
