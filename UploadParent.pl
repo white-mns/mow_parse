@@ -77,6 +77,10 @@ sub Main {
             $upload->DeleteSameResult('condition_all_texts', $result_no, $generate_no);
             $upload->Upload("./output/chara/condition_all_text_" . $result_no . "_" . $generate_no . ".csv", 'condition_all_texts');
         }
+        if(ConstData::EXE_CHARA_REWARD)    {
+            $upload->DeleteSameResult('rewards', $result_no, $generate_no);
+            $upload->Upload("./output/chara/reward_" . $result_no . "_" . $generate_no . ".csv", 'rewards');
+        }
         
     }
     print "result_no:$result_no,generate_no:$generate_no\n";

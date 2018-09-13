@@ -20,11 +20,12 @@ use warnings;
     use constant EXE_DATA       => 1;
         use constant EXE_DATA_PROPER_NAME => 1;
     use constant EXE_CHARA      => 1;
-        use constant EXE_CHARA_NAME               => 0;
-        use constant EXE_CHARA_ITEM               => 0;
-        use constant EXE_CHARA_STATUS             => 0;
+        use constant EXE_CHARA_NAME               => 1;
+        use constant EXE_CHARA_ITEM               => 1;
+        use constant EXE_CHARA_STATUS             => 1;
         use constant EXE_CHARA_SPEC               => 1;
         use constant EXE_CHARA_CONDITION_ALL_TEXT => 1;
-    use constant EXE_MARKET     => 0;
+        use constant EXE_CHARA_REWARD             => 1;
+    use constant EXE_MARKET     => 1;
 
 1;

@@ -21,6 +21,7 @@ require "./source/lib/NumCode.pm";
 require "./source/chara/Name.pm";
 require "./source/chara/Status.pm";
 require "./source/chara/Spec.pm";
+require "./source/chara/Reward.pm";
 
 use ConstData;        #定数呼び出し
 
@@ -54,6 +55,7 @@ sub Init() {
     if (ConstData::EXE_CHARA_NAME)   { $self->{DataHandlers}{Name}   = Name->new();}
     if (ConstData::EXE_CHARA_STATUS) { $self->{DataHandlers}{Status} = Status->new();}
     if (ConstData::EXE_CHARA_SPEC)   { $self->{DataHandlers}{Spec}   = Spec->new();}
+    if (ConstData::EXE_CHARA_REWARD) { $self->{DataHandlers}{Reward} = Reward->new();}
 
     #初期化処理
     foreach my $object( values %{ $self->{DataHandlers} } ) {
@@ -138,11 +140,13 @@ sub ParsePage{
     my $status_nodes     = &GetNode::GetNode_Tag_Class("table","charadata", \$tree);
     $status_nodes = scalar(@$status_nodes) ? $status_nodes : &GetNode::GetNode_Tag_Class("table","charadata2", \$tree); #機体プロフ絵ありのレイアウト対応
     my $spec_data_nodes  = &GetNode::GetNode_Tag_Class("table","specdata", \$tree);
+    my $nextday_h2_nodes = &GetNode::GetNode_Tag_Id("h2","nextday", \$tree);
 
     # データリスト取得
     if (exists($self->{DataHandlers}{Name}))   {$self->{DataHandlers}{Name}->GetData  ($e_no, $minieffect_nodes)};
     if (exists($self->{DataHandlers}{Status})) {$self->{DataHandlers}{Status}->GetData($e_no, $$status_nodes[0])};
     if (exists($self->{DataHandlers}{Spec}))   {$self->{DataHandlers}{Spec}->GetData  ($e_no, $$spec_data_nodes[0])};
+    if (exists($self->{DataHandlers}{Reward})) {$self->{DataHandlers}{Reward}->GetData($e_no, $$nextday_h2_nodes[0]->right)};
 
     $tree = $tree->delete;
 }
