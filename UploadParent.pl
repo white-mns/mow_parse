@@ -89,6 +89,10 @@ sub Main {
             $upload->DeleteSameResult('intentions', $result_no, $generate_no);
             $upload->Upload("./output/chara/intention_" . $result_no . "_" . $generate_no . ".csv", 'intentions');
         }
+        if(ConstData::EXE_CHARA_CONSORT_PLANE) {
+            $upload->DeleteSameResult('consort_planes', $result_no, $generate_no);
+            $upload->Upload("./output/chara/consort_plane_" . $result_no . "_" . $generate_no . ".csv", 'consort_planes');
+        }
         
     }
     if (ConstData::EXE_CHARALIST) {

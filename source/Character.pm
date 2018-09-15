@@ -24,6 +24,7 @@ require "./source/chara/Spec.pm";
 require "./source/chara/Reward.pm";
 require "./source/chara/BattleSystem.pm";
 require "./source/chara/Intention.pm";
+require "./source/chara/ConsortPlane.pm";
 
 use ConstData;        #定数呼び出し
 
@@ -60,6 +61,7 @@ sub Init() {
     if (ConstData::EXE_CHARA_REWARD)        { $self->{DataHandlers}{Reward}       = Reward->new();}
     if (ConstData::EXE_CHARA_BATTLE_SYSTEM) { $self->{DataHandlers}{BattleSystem} = BattleSystem->new();}
     if (ConstData::EXE_CHARA_INTENTION)     { $self->{DataHandlers}{Intention}    = Intention->new();}
+    if (ConstData::EXE_CHARA_CONSORT_PLANE) { $self->{DataHandlers}{ConsortPlane} = ConsortPlane->new();}
 
     #初期化処理
     foreach my $object( values %{ $self->{DataHandlers} } ) {
@@ -138,14 +140,15 @@ sub ParsePage{
     my $tree = HTML::TreeBuilder->new;
     $tree->parse($content);
 
-    my $player_nodes     = &GetNode::GetNode_Tag_Attr("h2", "id","player", \$tree);
-    my $charadata_node   = $$player_nodes[0]->right;
-    my $minieffect_nodes = &GetNode::GetNode_Tag_Attr("div", "class", "minieffect", \$charadata_node);
-    my $status_nodes     = &GetNode::GetNode_Tag_Attr("table", "class", "charadata", \$tree);
-    $status_nodes = scalar(@$status_nodes) ? $status_nodes : &GetNode::GetNode_Tag_Attr("table", "class", "charadata2", \$tree); #機体プロフ絵ありのレイアウト対応
-    my $spec_data_nodes  = &GetNode::GetNode_Tag_Attr("table", "class", "specdata", \$tree);
-    my $nextday_h2_nodes = &GetNode::GetNode_Tag_Attr("h2", "id", "nextday", \$tree);
-    my $h3_nodes         = &GetNode::GetNode_Tag("h3", \$tree);
+    my $player_nodes           = &GetNode::GetNode_Tag_Attr("h2",    "id",    "player", \$tree);
+    my $charadata_node         = $$player_nodes[0]->right;
+    my $minieffect_nodes       = &GetNode::GetNode_Tag_Attr("div",   "class", "minieffect", \$charadata_node);
+    my $status_nodes           = &GetNode::GetNode_Tag_Attr("table", "class", "charadata", \$tree);
+    $status_nodes              = scalar(@$status_nodes) ? $status_nodes : &GetNode::GetNode_Tag_Attr("table", "class", "charadata2", \$tree); #機体プロフ絵ありのレイアウト対応
+    my $spec_data_nodes        = &GetNode::GetNode_Tag_Attr("table", "class", "specdata", \$tree);
+    my $nextday_h2_nodes       = &GetNode::GetNode_Tag_Attr("h2",    "id",    "nextday", \$tree);
+    my $h3_nodes               = &GetNode::GetNode_Tag("h3", \$tree);
+    my $charalist_table_nodes  = &GetNode::GetNode_Tag_Attr("table", "class", "charalist", \$tree);
 
     # データリスト取得
     if (exists($self->{DataHandlers}{Name}))         {$self->{DataHandlers}{Name}->GetData        ($e_no, $minieffect_nodes)};
@@ -154,6 +157,7 @@ sub ParsePage{
     if (exists($self->{DataHandlers}{Reward}))       {$self->{DataHandlers}{Reward}->GetData      ($e_no, $$nextday_h2_nodes[0]->right)};
     if (exists($self->{DataHandlers}{BattleSystem})) {$self->{DataHandlers}{BattleSystem}->GetData($e_no, $h3_nodes)};
     if (exists($self->{DataHandlers}{Intention}))    {$self->{DataHandlers}{Intention}->GetData   ($e_no, $h3_nodes)};
+    if (exists($self->{DataHandlers}{ConsortPlane})) {$self->{DataHandlers}{ConsortPlane}->GetData($e_no, $h3_nodes, $$charalist_table_nodes[0])};
 
     $tree = $tree->delete;
 }
