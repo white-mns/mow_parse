@@ -23,6 +23,7 @@ require "./source/chara/Status.pm";
 require "./source/chara/Spec.pm";
 require "./source/chara/Reward.pm";
 require "./source/chara/BattleSystem.pm";
+require "./source/chara/Intention.pm";
 
 use ConstData;        #定数呼び出し
 
@@ -58,6 +59,7 @@ sub Init() {
     if (ConstData::EXE_CHARA_SPEC)          { $self->{DataHandlers}{Spec}         = Spec->new();}
     if (ConstData::EXE_CHARA_REWARD)        { $self->{DataHandlers}{Reward}       = Reward->new();}
     if (ConstData::EXE_CHARA_BATTLE_SYSTEM) { $self->{DataHandlers}{BattleSystem} = BattleSystem->new();}
+    if (ConstData::EXE_CHARA_INTENTION)     { $self->{DataHandlers}{Intention}    = Intention->new();}
 
     #初期化処理
     foreach my $object( values %{ $self->{DataHandlers} } ) {
@@ -151,6 +153,7 @@ sub ParsePage{
     if (exists($self->{DataHandlers}{Spec}))         {$self->{DataHandlers}{Spec}->GetData        ($e_no, $$spec_data_nodes[0])};
     if (exists($self->{DataHandlers}{Reward}))       {$self->{DataHandlers}{Reward}->GetData      ($e_no, $$nextday_h2_nodes[0]->right)};
     if (exists($self->{DataHandlers}{BattleSystem})) {$self->{DataHandlers}{BattleSystem}->GetData($e_no, $h3_nodes)};
+    if (exists($self->{DataHandlers}{Intention}))    {$self->{DataHandlers}{Intention}->GetData   ($e_no, $h3_nodes)};
 
     $tree = $tree->delete;
 }

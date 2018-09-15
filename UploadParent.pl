@@ -85,6 +85,10 @@ sub Main {
             $upload->DeleteSameResult('battle_systems', $result_no, $generate_no);
             $upload->Upload("./output/chara/battle_system_" . $result_no . "_" . $generate_no . ".csv", 'battle_systems');
         }
+        if(ConstData::EXE_CHARA_INTENTION) {
+            $upload->DeleteSameResult('intentions', $result_no, $generate_no);
+            $upload->Upload("./output/chara/intention_" . $result_no . "_" . $generate_no . ".csv", 'intentions');
+        }
         
     }
     if (ConstData::EXE_CHARALIST) {

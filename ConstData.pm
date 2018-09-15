@@ -27,6 +27,7 @@ use warnings;
         use constant EXE_CHARA_SPEC          => 1;
         use constant EXE_CHARA_REWARD        => 1;
         use constant EXE_CHARA_BATTLE_SYSTEM => 1;
+        use constant EXE_CHARA_INTENTION     => 1;
     use constant EXE_TSV        => 1;
         use constant EXE_TSV_UNITDATA    => 1;
         use constant EXE_TSV_CATALOGDATA => 1;
