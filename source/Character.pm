@@ -22,6 +22,7 @@ require "./source/chara/Name.pm";
 require "./source/chara/Status.pm";
 require "./source/chara/Spec.pm";
 require "./source/chara/Reward.pm";
+require "./source/chara/BattleSystem.pm";
 
 use ConstData;        #定数呼び出し
 
@@ -52,10 +53,11 @@ sub Init() {
     $self->{ResultNo0} = sprintf ("%03d", $self->{ResultNo});
 
     #インスタンス作成
-    if (ConstData::EXE_CHARA_NAME)   { $self->{DataHandlers}{Name}   = Name->new();}
-    if (ConstData::EXE_CHARA_STATUS) { $self->{DataHandlers}{Status} = Status->new();}
-    if (ConstData::EXE_CHARA_SPEC)   { $self->{DataHandlers}{Spec}   = Spec->new();}
-    if (ConstData::EXE_CHARA_REWARD) { $self->{DataHandlers}{Reward} = Reward->new();}
+    if (ConstData::EXE_CHARA_NAME)          { $self->{DataHandlers}{Name}         = Name->new();}
+    if (ConstData::EXE_CHARA_STATUS)        { $self->{DataHandlers}{Status}       = Status->new();}
+    if (ConstData::EXE_CHARA_SPEC)          { $self->{DataHandlers}{Spec}         = Spec->new();}
+    if (ConstData::EXE_CHARA_REWARD)        { $self->{DataHandlers}{Reward}       = Reward->new();}
+    if (ConstData::EXE_CHARA_BATTLE_SYSTEM) { $self->{DataHandlers}{BattleSystem} = BattleSystem->new();}
 
     #初期化処理
     foreach my $object( values %{ $self->{DataHandlers} } ) {
@@ -141,12 +143,14 @@ sub ParsePage{
     $status_nodes = scalar(@$status_nodes) ? $status_nodes : &GetNode::GetNode_Tag_Attr("table", "class", "charadata2", \$tree); #機体プロフ絵ありのレイアウト対応
     my $spec_data_nodes  = &GetNode::GetNode_Tag_Attr("table", "class", "specdata", \$tree);
     my $nextday_h2_nodes = &GetNode::GetNode_Tag_Attr("h2", "id", "nextday", \$tree);
+    my $h3_nodes         = &GetNode::GetNode_Tag("h3", \$tree);
 
     # データリスト取得
-    if (exists($self->{DataHandlers}{Name}))   {$self->{DataHandlers}{Name}->GetData  ($e_no, $minieffect_nodes)};
-    if (exists($self->{DataHandlers}{Status})) {$self->{DataHandlers}{Status}->GetData($e_no, $$status_nodes[0])};
-    if (exists($self->{DataHandlers}{Spec}))   {$self->{DataHandlers}{Spec}->GetData  ($e_no, $$spec_data_nodes[0])};
-    if (exists($self->{DataHandlers}{Reward})) {$self->{DataHandlers}{Reward}->GetData($e_no, $$nextday_h2_nodes[0]->right)};
+    if (exists($self->{DataHandlers}{Name}))         {$self->{DataHandlers}{Name}->GetData        ($e_no, $minieffect_nodes)};
+    if (exists($self->{DataHandlers}{Status}))       {$self->{DataHandlers}{Status}->GetData      ($e_no, $$status_nodes[0])};
+    if (exists($self->{DataHandlers}{Spec}))         {$self->{DataHandlers}{Spec}->GetData        ($e_no, $$spec_data_nodes[0])};
+    if (exists($self->{DataHandlers}{Reward}))       {$self->{DataHandlers}{Reward}->GetData      ($e_no, $$nextday_h2_nodes[0]->right)};
+    if (exists($self->{DataHandlers}{BattleSystem})) {$self->{DataHandlers}{BattleSystem}->GetData($e_no, $h3_nodes)};
 
     $tree = $tree->delete;
 }
