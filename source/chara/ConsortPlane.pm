@@ -107,8 +107,9 @@ sub GetConsortPlaneData{
         if ($link_text ne $consort_plane) {next;}
         
         my $link_href = $a_node->attr("href");
-
         if ($link_href !~ /c(\d{4})\.html/) {next;}
+
+        if ($1 == $self->{ENo}) {next;}
 
         $consort_plane = $1+0;
 
