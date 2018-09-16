@@ -112,6 +112,8 @@ sub GetData{
     my $content   = &IO::FileRead ( $file_name );
     my @file_data = split(/\n/, $content);
     shift(@file_data); # ヘッダ行削除
+
+    $self->{LastENo} = 0;
     
     foreach my  $data_set(@file_data) {
         my $data = [];
@@ -134,6 +136,10 @@ sub GetUnitData{
     my $self         = shift;
     my $data         = shift;
     my $e_no = int($$data[0] / 31);
+
+    if ($self->{LastENo} > $e_no) {return;} # データの隙間にちょこちょこ挟まる重複データ、結果HTML上には存在しないデータは無視する
+    $self->{LastENo} = $e_no;
+
     my $i_no = $$data[0] % 31;
 
     my $name = $$data[1];
