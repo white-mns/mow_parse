@@ -29,6 +29,7 @@ use warnings;
         use constant EXE_CHARA_BATTLE_SYSTEM      => 1;
         use constant EXE_CHARA_INTENTION          => 1;
         use constant EXE_CHARA_CONSORT_PLANE      => 1;
+        use constant EXE_CHARA_ASSEMBLY_NUM       => 1;
     use constant EXE_CHARALIST    => 1;
         use constant EXE_CHARALIST_NEXT_BATTLE  => 1;
     use constant EXE_BATTLE  => 1;
