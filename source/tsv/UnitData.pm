@@ -37,7 +37,11 @@ sub Init(){
     ($self->{ResultNo}, $self->{GenerateNo}, $self->{CommonDatas}) = @_;
     
     #初期化
-    $self->{Datas}{Item}  = StoreData->new();
+    $self->{AssemblyNum}         = {};
+    $self->{AssemblyNum}{0}      = {};
+    $self->{AssemblyNum}{1}      = {};
+    $self->{Datas}{Item}         = StoreData->new();
+    $self->{Datas}{AssemblyNum}  = StoreData->new();
     my $header_list = "";
    
     $header_list = [
@@ -80,8 +84,19 @@ sub Init(){
 
     $self->{Datas}{Item}->Init($header_list);
     
+    $header_list = [
+                "result_no",
+                "generate_no",
+                "e_no",
+                "division_type",
+                "proper_name_id",
+                "num",
+    ];
+    $self->{Datas}{AssemblyNum}->Init($header_list);
+    
     #出力ファイル設定
-    $self->{Datas}{Item}->SetOutputName( "./output/chara/item_" . $self->{ResultNo} . "_" . $self->{GenerateNo} . ".csv" );
+    $self->{Datas}{Item}->SetOutputName       ( "./output/chara/item_"         . $self->{ResultNo} . "_" . $self->{GenerateNo} . ".csv" );
+    $self->{Datas}{AssemblyNum}->SetOutputName( "./output/chara/assembly_num_" . $self->{ResultNo} . "_" . $self->{GenerateNo} . ".csv" );
     return;
 }
 
@@ -97,6 +112,8 @@ sub GetData{
     my $content   = &IO::FileRead ( $file_name );
     my @file_data = split(/\n/, $content);
     shift(@file_data); # ヘッダ行削除
+
+    $self->{LastENo} = 0;
     
     foreach my  $data_set(@file_data) {
         my $data = [];
@@ -119,6 +136,10 @@ sub GetUnitData{
     my $self         = shift;
     my $data         = shift;
     my $e_no = int($$data[0] / 31);
+
+    if ($self->{LastENo} > $e_no) {return;} # データの隙間にちょこちょこ挟まる重複データ、結果HTML上には存在しないデータは無視する
+    $self->{LastENo} = $e_no;
+
     my $i_no = $$data[0] % 31;
 
     my $name = $$data[1];
@@ -171,6 +192,11 @@ sub GetUnitData{
     my @datas=($self->{ResultNo}, $self->{GenerateNo}, $e_no, $i_no, $name, $kind, $unique_1, $unique_2, $ap, $spending_en, $value, $ammunition_cost, $weight, $turning_speed, $guard_elemental, $guard_value, $precision, $punding, $aerosol, $bullet, $loading, $weapon_element, $add_abnormity, $strength, $gunshot, $struggle, $reaction, $control, $preparation, $fitly, $equip, $fuka_1, $fuka_2, $orig_name, $drunkenness);
     $self->{Datas}{Item}->AddData(join(ConstData::SPLIT, @datas));
     
+    if ($equip) {
+        $self->{AssemblyNum}{$e_no}{0}{$kind}      += 1;
+        $self->{AssemblyNum}{$e_no}{1}{$orig_name} += 1;
+    }
+
     return;
 }
 
@@ -181,7 +207,16 @@ sub GetUnitData{
 #-----------------------------------#
 sub Output(){
     my $self = shift;
-    
+
+    # アセンブル数情報の書き出し
+    foreach my $e_no (sort{$a <=> $b} keys %{ $self->{AssemblyNum} } ) {
+        foreach my $division_type (sort{$a <=> $b} keys %{ $self->{AssemblyNum}{$e_no} } ) {
+            foreach my $proper_name_id (sort{$a <=> $b} keys %{ $self->{AssemblyNum}{$e_no}{$division_type} } ) {
+                $self->{Datas}{AssemblyNum}->AddData(join(ConstData::SPLIT, ($self->{ResultNo}, $self->{GenerateNo}, $e_no, $division_type, $proper_name_id, $self->{AssemblyNum}{$e_no}{$division_type}{$proper_name_id} )));
+            }
+        }
+    }
+
     foreach my $object( values %{ $self->{Datas} } ) {
         $object->Output();
     }

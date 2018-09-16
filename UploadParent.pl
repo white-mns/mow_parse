@@ -93,6 +93,10 @@ sub Main {
             $upload->DeleteSameResult('consort_planes', $result_no, $generate_no);
             $upload->Upload("./output/chara/consort_plane_" . $result_no . "_" . $generate_no . ".csv", 'consort_planes');
         }
+        if(ConstData::EXE_CHARA_ASSEMBLY_NUM) {
+            $upload->DeleteSameResult('assembly_nums', $result_no, $generate_no);
+            $upload->Upload("./output/chara/assembly_num_" . $result_no . "_" . $generate_no . ".csv", 'assembly_nums');
+        }
         
     }
     if (ConstData::EXE_CHARALIST) {
