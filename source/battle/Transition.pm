@@ -134,8 +134,35 @@ sub ReadH3Nodes{
 
     #if ($e_no == 0) {return;}
 
-    foreach my $node ($h3_node->right) {
+    $self->ReadActNodes($h3_node, $turn, $act, $e_no);
+
+    return;
+}
+
+#-----------------------------------#
+#    戦闘機動データ解析
+#------------------------------------
+#    引数｜h3ノード or INDクラスの最初の子ノード
+#-----------------------------------#
+sub ReadActNodes{
+    my $self  = shift;
+    my $start_node = shift;
+    my $turn = shift;
+    my $act  = shift;
+    my $e_no = shift;
+
+    #if ($e_no == 0) {return;}
+
+    foreach my $node ($start_node->right) {
         if ($node =~ /HASH/ && ($node->tag eq "h2" || $node->tag eq "h3")) {last;}
+
+        if ($node =~ /HASH/ && $node->tag eq "div" && $node->attr("class") && $node->attr("class") eq "IND") {
+            my @children = $node->content_list;
+            if (scalar(@children) && $children[0] =~ /HASH/) {
+                $self->ReadActNodes($children[0], $turn, $act, $e_no); # コロッセオ敵側配置の時、再帰で解析
+            }
+        }
+
         if ($node =~ /HASH/ && $node->tag eq "span") {
             $self->GetResultTransitionData($node, $turn, $act, $e_no);
         }
