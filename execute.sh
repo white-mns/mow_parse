@@ -15,7 +15,7 @@ fi
 RESULT_NO=`printf "%03d" $1`
 GENERATE_NO=$2
 
-# 再更新番号の指定がない場合、もっとも再更新番号の大きいファイルを探索して実行する
+# 再更新番号の指定がない場合、取得済みで最も再更新番号の大きいファイルを探索して実行する
 if [ -z "$2" ]; then
     for ((GENERATE_NO=5;GENERATE_NO >=0;GENERATE_NO--)) {
         
