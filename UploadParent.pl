@@ -110,6 +110,10 @@ sub Main {
             $upload->DeleteSameResult('blocks', $result_no, $generate_no);
             $upload->Upload("./output/battle/block_" . $result_no . "_" . $generate_no . ".csv", 'blocks');
         }
+        if(ConstData::EXE_BATTLE_TRANSITION) {
+            $upload->DeleteSameResult('transitions', $result_no, $generate_no);
+            $upload->Upload("./output/battle/transition_" . $result_no . "_" . $generate_no . ".csv", 'transitions');
+        }
     }
     print "result_no:$result_no,generate_no:$generate_no\n";
     return;

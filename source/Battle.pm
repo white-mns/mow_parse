@@ -19,6 +19,7 @@ require "./source/lib/time.pm";
 require "./source/lib/NumCode.pm";
 
 require "./source/battle/Block.pm";
+require "./source/battle/Transition.pm";
 
 use ConstData;        #定数呼び出し
 
@@ -49,7 +50,8 @@ sub Init(){
     $self->{ResultNo0} = sprintf("%03d", $self->{ResultNo});
 
     #インスタンス作成
-    if (ConstData::EXE_BATTLE_BLOCK) { $self->{DataHandlers}{Block} = Block->new();}
+    if (ConstData::EXE_BATTLE_BLOCK)      { $self->{DataHandlers}{Block}      = Block->new();}
+    if (ConstData::EXE_BATTLE_TRANSITION) { $self->{DataHandlers}{Transition} = Transition->new();}
 
     #初期化処理
     foreach my $object( values %{ $self->{DataHandlers} } ) {
@@ -129,9 +131,11 @@ sub ParsePage{
     $tree->parse($content);
 
     my $lifelist_table_nodes = &GetNode::GetNode_Tag_Attr("table", "class", "lifelist", \$tree);
+    my $h2_nodes             = &GetNode::GetNode_Tag("h2", \$tree);
 
     # データリスト取得
-    if (exists($self->{DataHandlers}{Block})) {$self->{DataHandlers}{Block}->GetData($battle_no, $$lifelist_table_nodes[0])};
+    if (exists($self->{DataHandlers}{Block}))      {$self->{DataHandlers}{Block}->GetData     ($battle_no, $$lifelist_table_nodes[0])};
+    if (exists($self->{DataHandlers}{Transition})) {$self->{DataHandlers}{Transition}->GetData($battle_no, $h2_nodes)};
 
     $tree = $tree->delete;
 }

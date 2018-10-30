@@ -92,6 +92,8 @@ sub GetNameData{
     my @datas=($self->{ResultNo}, $self->{GenerateNo}, $self->{ENo}, $name, $nickname);
     $self->{Datas}{Data}->AddData(join(ConstData::SPLIT, @datas));
 
+    $self->{CommonDatas}{NickName}{$nickname} = $self->{ENo};
+
     return;
 }
 
